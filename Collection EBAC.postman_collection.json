@@ -1,0 +1,292 @@
+{
+  "info": {
+    "_postman_id": "1f420d13-cda9-43ed-a2e7-8494723f614d",
+    "name": "Collection EBAC",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "60012823",
+    "_collection_link": "https://go.postman.co/collection/60012823-1f420d13-cda9-43ed-a2e7-8494723f614d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Tentativa de criar livro já existente",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});\r\npm.test(\"Body matches failure string\", function () {\r\n    pm.expect(pm.response.text()).to.include(\"Já existe um livro com este título e autor.\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "{{bearer_token_0bts}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"O Cortiço\",\n  \"author\": \"Aluísio Azevedo\",\n  \"description\": \"Romance naturalista que retrata a vida em um cortiço\",\n  \"category\": \"Literatura Brasileira\",\n  \"isbn\": \"978-85-260-1320-6\",\n  \"editor\": \"Editora Ática\",\n  \"language\": \"Português\",\n  \"publication_year\": 1890,\n  \"pages\": 312,\n  \"format\": \"Físico\",\n  \"total_copies\": 4,\n  \"available_copies\": 4\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}books",
+          "host": [
+            "{{baseUrl}}books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cria um livro de id 5",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\npm.test(\"Body matches successful creation string\", function () {\r\n    pm.expect(pm.response.text()).to.include(\"Livro criado com sucesso.\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "apikey"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "{{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 5,\r\n  \"title\": \"{{$randomLoremSentence}}\",\r\n  \"author\": \"{{$randomFullName}}\",\r\n  \"description\": \"{{$randomLoremSentences}}\",\r\n  \"category\": \"Literatura\",\r\n  \"isbn\": \"{{$randomPhoneNumber}}\",\r\n  \"editor\": \"Editora Chave\",\r\n  \"language\": \"Português e Inglês\",\r\n  \"publication_year\": 1904,\r\n  \"pages\": 50,\r\n  \"format\": \"Físico\",\r\n  \"total_copies\": 4,\r\n  \"available_copies\": 4\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}books",
+          "host": [
+            "{{baseUrl}}books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Atualização de livro",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"Body matches successful alteration string\", function () {\r\n    pm.expect(pm.response.text()).to.include(\"Livro atualizado com sucesso.\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "{{bearer_token_0bts}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Nome livro atualizado\",\n  \"author\": \"Autor Atualizado\",\n  \"description\": \"Descrição atualizada do livro\",\n  \"category\": \"Categoria atualizada\",\n  \"editor\": \"Editora Atualizada\",\n  \"language\": \"Português\",\n  \"publication_year\": 2000,\n  \"pages\": 300,\n  \"format\": \"Físico\",\n  \"total_copies\": 10,\n  \"available_copies\": 5\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}books/1",
+          "host": [
+            "{{baseUrl}}books"
+          ],
+          "path": [
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar todos livros em ordem de ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"Body matches successful verification string\", function () {\r\n    pm.expect(pm.response.text()).to.include(\"created_at\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/api/books?available=true&limit=100&offset=0&orderBy=id&order=ASC",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "books"
+          ],
+          "query": [
+            {
+              "key": "available",
+              "value": "true"
+            },
+            {
+              "key": "limit",
+              "value": "100"
+            },
+            {
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "key": "orderBy",
+              "value": "id"
+            },
+            {
+              "key": "order",
+              "value": "ASC"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Procurar Livro por ID inexistente",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});\r\npm.test(\"Body matches failure verification string\", function () {\r\n    pm.expect(pm.response.text()).to.include(\"Livro não encontrado.\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}books/500",
+          "host": [
+            "{{baseUrl}}books"
+          ],
+          "path": [
+            "500"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Excluir livro de id 5",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"Body matches book deletion string\", function () {\r\n    pm.expect(pm.response.text()).to.include(\"Livro deletado com sucesso\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "{{bearer_token_0bts}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}books/5",
+          "host": [
+            "{{baseUrl}}books"
+          ],
+          "path": [
+            "5"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "bearer_token_0bts",
+      "secret": true
+    }
+  ]
+}
